@@ -41,7 +41,7 @@ int shell_process(char * input) {
         return SS_OK;
     }
 
-    if (str_equals(input, "test")) {
+    if (str_equals(input, "test memory")) {
         int* a = (int*) malloc(sizeof(int));
         *a = 123;
 

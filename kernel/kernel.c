@@ -1,9 +1,12 @@
 #include <stdint.h>
 
 #include "terminal.h"
-#include "keyboard.h"
 #include "shell.h"
 #include "memory.h"
+
+#include "../drivers/keyboard/keyboard.h"
+#include "interrupts.h"
+#include "pic.h"
 
 extern char kernel_end;
 
@@ -18,6 +21,11 @@ void kernel_main(unsigned int multiboot_info_addr) {
 
     // debug_memory_map(multiboot_info_addr);
     heap_init();
+
+    interrupts_init();
+    pic_init();
+    __asm__ volatile ("sti");
+
     load_user();
 }
 
@@ -63,55 +71,59 @@ void load_user() {
     int inputBufferLength = 0;
 
     while (1) {
-        char c = keyboard_getchar();
-
-        if (c == 0) {
-            continue;
-        }
-
-        // Check if the char is 'enter'
-        if (c == '\n') {
-            undraw_cursor();
-            set_cursor(0, get_cursor_y()+1);
-
-            inputBuffer[inputBufferLength] = '\0';
-
-            int res = shell_process(inputBuffer);
-            // Reset buffer before reprocessing user input
-            inputBufferLength = 0;
-
-            if (res != 0) {
-                if (res == 1) {
-                    return;
-                }
-                println("Error!");
-            }
-
-            println("> ");
-            draw_cursor();
-
-            continue;
-        }
-
-        // Check if we're backspacing/deleting chars
-        if (c == '\b') {
-            // We already deleted everything so we do nothing.
-            if (inputBufferLength == 0) {
-                continue;
-            }
-
-            undraw_cursor();
-            set_cursor(get_cursor_x()-1, get_cursor_y());
-            inputBufferLength--;
-            draw_cursor();
-            continue;
-        }
-
-        // Print the character to the terminal.
-        print_char(c);
-        draw_cursor();
-
-        inputBuffer[inputBufferLength] = c;
-        inputBufferLength++;
+        __asm__ volatile ("hlt");
     }
+
+    // while (1) {
+    //     char c = keyboard_getchar();
+
+    //     if (c == 0) {
+    //         continue;
+    //     }
+
+    //     // Check if the char is 'enter'
+    //     if (c == '\n') {
+    //         undraw_cursor();
+    //         set_cursor(0, get_cursor_y()+1);
+
+    //         inputBuffer[inputBufferLength] = '\0';
+
+    //         int res = shell_process(inputBuffer);
+    //         // Reset buffer before reprocessing user input
+    //         inputBufferLength = 0;
+
+    //         if (res != 0) {
+    //             if (res == 1) {
+    //                 return;
+    //             }
+    //             println("Error!");
+    //         }
+
+    //         println("> ");
+    //         draw_cursor();
+
+    //         continue;
+    //     }
+
+    //     // Check if we're backspacing/deleting chars
+    //     if (c == '\b') {
+    //         // We already deleted everything so we do nothing.
+    //         if (inputBufferLength == 0) {
+    //             continue;
+    //         }
+
+    //         undraw_cursor();
+    //         set_cursor(get_cursor_x()-1, get_cursor_y());
+    //         inputBufferLength--;
+    //         draw_cursor();
+    //         continue;
+    //     }
+
+    //     // Print the character to the terminal.
+    //     print_char(c);
+    //     draw_cursor();
+
+    //     inputBuffer[inputBufferLength] = c;
+    //     inputBufferLength++;
+    // }
 }
