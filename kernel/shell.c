@@ -58,6 +58,8 @@ int shell_process(char * input) {
         print_hex((uint32_t) b);
         println("");
 
+        free(b);
+
         return SS_OK;
     }
 
