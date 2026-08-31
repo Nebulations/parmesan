@@ -66,64 +66,7 @@ void load_user() {
     println("> ");
     draw_cursor();
 
-    // Allocate a 128 byte buffer for user input.
-    char inputBuffer[128];
-    int inputBufferLength = 0;
-
     while (1) {
         __asm__ volatile ("hlt");
     }
-
-    // while (1) {
-    //     char c = keyboard_getchar();
-
-    //     if (c == 0) {
-    //         continue;
-    //     }
-
-    //     // Check if the char is 'enter'
-    //     if (c == '\n') {
-    //         undraw_cursor();
-    //         set_cursor(0, get_cursor_y()+1);
-
-    //         inputBuffer[inputBufferLength] = '\0';
-
-    //         int res = shell_process(inputBuffer);
-    //         // Reset buffer before reprocessing user input
-    //         inputBufferLength = 0;
-
-    //         if (res != 0) {
-    //             if (res == 1) {
-    //                 return;
-    //             }
-    //             println("Error!");
-    //         }
-
-    //         println("> ");
-    //         draw_cursor();
-
-    //         continue;
-    //     }
-
-    //     // Check if we're backspacing/deleting chars
-    //     if (c == '\b') {
-    //         // We already deleted everything so we do nothing.
-    //         if (inputBufferLength == 0) {
-    //             continue;
-    //         }
-
-    //         undraw_cursor();
-    //         set_cursor(get_cursor_x()-1, get_cursor_y());
-    //         inputBufferLength--;
-    //         draw_cursor();
-    //         continue;
-    //     }
-
-    //     // Print the character to the terminal.
-    //     print_char(c);
-    //     draw_cursor();
-
-    //     inputBuffer[inputBufferLength] = c;
-    //     inputBufferLength++;
-    // }
 }

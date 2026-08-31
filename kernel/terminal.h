@@ -14,6 +14,7 @@ void print_char(char c);
 void print_hex(unsigned int num);
 void print(char *message);
 void println(char * message);
+void process_key(char c);
 
 // cursor
 void set_cursor(int x, int y);

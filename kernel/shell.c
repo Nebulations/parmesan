@@ -6,8 +6,65 @@
 #define SS_EXIT 1
 #define SS_BAD_CMD 2
 
+// Allocate a 128 byte buffer for user input.
+static char inputBuffer[128];
+static int inputBufferLength = 0;
+
 int shell_process(char * input);
+void process_key(char c);
+
 void _help_command();
+
+void process_key(char c) {
+    if (c == 0) {
+        return;
+    }
+
+    // Check if the char is 'enter'
+    if (c == '\n') {
+        undraw_cursor();
+        set_cursor(0, get_cursor_y()+1);
+
+        inputBuffer[inputBufferLength] = '\0';
+
+        int res = shell_process(inputBuffer);
+        // Reset buffer before reprocessing user input
+        inputBufferLength = 0;
+
+        if (res != 0) {
+            if (res == 1) {
+                return;
+            }
+            println("Error!");
+        }
+
+        println("> ");
+        draw_cursor();
+
+        return;
+    }
+
+    // Check if we're backspacing/deleting chars
+    if (c == '\b') {
+        // We already deleted everything so we do nothing.
+        if (inputBufferLength == 0) {
+            return;
+        }
+
+        undraw_cursor();
+        set_cursor(get_cursor_x()-1, get_cursor_y());
+        inputBufferLength--;
+        draw_cursor();
+        return;
+    }
+
+    // Print the character to the terminal.
+    print_char(c);
+    draw_cursor();
+
+    inputBuffer[inputBufferLength] = c;
+    inputBufferLength++;
+}
 
 int shell_process(char * input) {
     if (str_equals(input, "clear")) {
