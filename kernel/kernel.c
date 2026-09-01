@@ -1,12 +1,12 @@
 #include <stdint.h>
 
-#include "terminal.h"
-#include "shell.h"
-#include "memory.h"
+#include "drivers/display/vga/terminal.h"
+#include "shell/shell.h"
+#include "memory/memory.h"
 
-#include "../drivers/keyboard/keyboard.h"
-#include "interrupts.h"
-#include "pic.h"
+#include "drivers/keyboard/keyboard.h"
+#include "interrupts/interrupts.h"
+#include "interrupts/pic.h"
 
 extern char kernel_end;
 

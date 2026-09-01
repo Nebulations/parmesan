@@ -2,13 +2,13 @@ CC = i686-elf-gcc
 AS = i686-elf-as
 LD = i686-elf-gcc
 
-CFLAGS = -m32 -ffreestanding -O2 -Wall -Wextra
+CFLAGS = -m32 -ffreestanding -O2 -Wall -Wextra -I.
 LDFLAGS = -m32 -ffreestanding -nostdlib -T linker.ld
 
 KERNEL = parmesan.bin
 
 # Find all C source files recursively
-C_SOURCES = $(shell find kernel drivers -name "*.c")
+C_SOURCES = $(shell find drivers kernel lib -name "*.c")
 
 # Convert:
 # kernel/foo.c

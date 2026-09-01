@@ -1,6 +1,6 @@
 #include<stdint.h>
 
-#include "../../kernel/terminal.h"
+#include "kernel/shell/shell.h"
 
 static inline uint8_t inb(unsigned short port) {
     uint8_t value;
@@ -27,14 +27,5 @@ static char keyboard_map[] = {
 void keyboard_handler() {
     uint8_t code = inb(0x60);
 
-    // Releasing a key
-    if (code & 0x80) return;
-
-    // Array is out of bounds, so we say that no key was found.
-    // if (sizeof(keyboard_map) / sizeof(keyboard_map[0]) > code) {
-    //     process_key(0);
-    //     return;
-    // }
-
-    process_key(keyboard_map[code]);
+    process_keyboard_input(keyboard_map[code], code, code & 0x80);
 }

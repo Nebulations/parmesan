@@ -1,7 +1,7 @@
-#include "../terminal.h"
-#include "../util/array.h"
-#include "../util/string.h"
-#include "../memory.h"
+#include "drivers/display/vga/terminal.h"
+#include "lib/array.h"
+#include "lib/string.h"
+#include "kernel/memory/memory.h"
 #include "cmds.h"
 
 #define SS_OK 0
@@ -46,8 +46,24 @@ void shell_init() {
     scmds_init();
 }
 
-void process_key(char c);
-void process_key(char c) {
+void process_keyboard_input(char c, uint8_t code, uint8_t keyboard_map_len);
+
+/**
+ * Process the user's input
+ * @param c The character mapped to the currently used keyboard.
+ * @param code The keyboard code.
+ * @param keyboard_map_len The length of the keyboard map used. 
+ */
+void process_keyboard_input(char c, uint8_t code, uint8_t keyboard_map_len) {
+    int released = code & 0x80;
+
+    // Validate the key is in range and not outside the array
+    // so we don't access random memory addresses.
+    if (code >= keyboard_map_len) {
+        println("OUT OF BOUNDS");
+        return;
+    }
+
     if (c == 0) {
         return;
     }

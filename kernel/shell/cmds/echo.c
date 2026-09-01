@@ -1,5 +1,5 @@
-#include "../shell.h"
-#include "../../terminal.h"
+#include "kernel/shell/shell.h"
+#include "drivers/display/vga/terminal.h"
 
 #define SS_OK 0
 #define SS_EXIT 1

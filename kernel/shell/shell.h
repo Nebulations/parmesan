@@ -16,6 +16,7 @@ void shell_register(shell_command_t * cmd);
 void register_cmd(char * name, int argc, command_handler_t command);
 
 void shell_init();
-void process_key(char c);
+
+void process_keyboard_input(char c, uint8_t code, uint8_t keyboard_map_len);
 
 #endif

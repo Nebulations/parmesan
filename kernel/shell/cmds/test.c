@@ -1,7 +1,7 @@
-#include "../shell.h"
-#include "../../terminal.h"
-#include "../../memory.h"
-#include "../../util/string.h"
+#include "kernel/shell/shell.h"
+#include "drivers/display/vga/terminal.h"
+#include "kernel/memory/memory.h"
+#include "lib/string.h"
 
 #define SS_OK 0
 #define SS_EXIT 1
