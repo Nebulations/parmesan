@@ -35,13 +35,15 @@ compiled/pic.o: kernel/pic.c
 # Utils
 compiled/string.o: kernel/util/string.c
 	$(CC) $(CFLAGS) -c kernel/util/string.c -o compiled/string.o
+compiled/array.o: kernel/util/array.c
+	$(CC) $(CFLAGS) -c kernel/util/array.c -o compiled/array.o
 
 # Drivers
 compiled/keyboard.o: drivers/keyboard/keyboard.c
 	$(CC) $(CFLAGS) -c drivers/keyboard/keyboard.c -o compiled/keyboard.o
 
-$(KERNEL): compiled/boot.o compiled/interrupts.o compiled/kernel.o compiled/terminal.o compiled/keyboard.o compiled/shell.o compiled/string.o compiled/memory.o compiled/heap.o compiled/interrupts_asm.o compiled/pic.o linker.ld
-	$(LD) $(LDFLAGS) -o compiled/$(KERNEL) compiled/boot.o compiled/interrupts.o compiled/kernel.o compiled/terminal.o compiled/keyboard.o compiled/shell.o compiled/string.o compiled/memory.o compiled/heap.o compiled/interrupts_asm.o compiled/pic.o -lgcc
+$(KERNEL): compiled/boot.o compiled/interrupts.o compiled/kernel.o compiled/terminal.o compiled/keyboard.o compiled/shell.o compiled/string.o compiled/array.o compiled/memory.o compiled/heap.o compiled/interrupts_asm.o compiled/pic.o linker.ld
+	$(LD) $(LDFLAGS) -o compiled/$(KERNEL) compiled/boot.o compiled/interrupts.o compiled/kernel.o compiled/terminal.o compiled/keyboard.o compiled/shell.o compiled/string.o compiled/array.o compiled/memory.o compiled/heap.o compiled/interrupts_asm.o compiled/pic.o -lgcc
 
 run: $(KERNEL)
 	qemu-system-i386 -kernel compiled/$(KERNEL) -display gtk,grab-on-hover=off

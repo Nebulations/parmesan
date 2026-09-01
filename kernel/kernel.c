@@ -18,9 +18,12 @@ void kernel_main(unsigned int multiboot_info_addr) {
     // Disable the hardware cursor in favor of the software cursor.
     disable_cursor();
     clear_screen();
+    println("Loading...");
 
     // debug_memory_map(multiboot_info_addr);
     heap_init();
+
+    shell_init();
 
     interrupts_init();
     pic_init();
@@ -61,8 +64,7 @@ void debug_memory_map(unsigned int multiboot_info_addr) {
 }
 
 void load_user() {
-    println("ParmesanOS");
-    println("");
+    println("Welcome to ParmesanOS!");
     println("> ");
     draw_cursor();
 
