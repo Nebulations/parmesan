@@ -14,6 +14,9 @@ int scmd_echo(int argc, char ** argv) {
             print_char(*arg);
             arg++;
         }
+
+        // Add a space so arguments are seperated.
+        print(" ");
     }
 
     return SS_OK;
