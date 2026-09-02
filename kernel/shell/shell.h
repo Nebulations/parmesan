@@ -3,6 +3,11 @@
 #ifndef SHELL_H
 #define SHELL_H
 
+#define SS_OK 0
+#define SS_EXIT 1
+#define SS_BAD_CMD 2
+#define SS_INVALID_ARGS 3
+
 typedef int (*command_handler_t)(int argc, char ** argv);
 
 typedef struct {

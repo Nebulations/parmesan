@@ -4,11 +4,6 @@
 
 #include "lib/std/stdio.h"
 
-#define SS_OK 0
-#define SS_EXIT 1
-#define SS_BAD_CMD 2
-#define SS_INVALID_ARGS 3
-
 int scmd_test(int argc, char ** argv) {
     if (argc == 0) {
         return SS_INVALID_ARGS;
