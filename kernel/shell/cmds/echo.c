@@ -14,6 +14,8 @@ int scmd_echo(int argc, char ** argv) {
         print(" ");
     }
 
+    print("\n");
+
     return SS_OK;
 }
 

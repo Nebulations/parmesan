@@ -144,8 +144,9 @@ void process_keyboard_input(char c, uint8_t code, uint8_t keyboard_map_len) {
         // We now have the command name available, how many arguments
         // it holds and what arguments it has.
         // Now, we check if the command is registered in the command shell table
+        shell_command_t* command;
         for (int i = 0; i < command_count; i++) {
-            shell_command_t* command = &commands[i];
+            command = &commands[i];
 
             if (str_equals(command->name, command_name)) {
                 // The command names match. We grab the command from the struct and
@@ -163,16 +164,14 @@ void process_keyboard_input(char c, uint8_t code, uint8_t keyboard_map_len) {
 
         switch (res) {
             case SS_BAD_CMD:
-                print("Unknown command '");
-                print(inputBuffer);
-                print("'.");
+                printf("Unknown command '%s'.\n", inputBuffer);
                 break;
             case SS_INVALID_ARGS:
-                print("Insufficient arguments. Expected 0, received 0.");
+                printf("Insufficient arguments. Expected %d, received %d.\n", command->argc, 0);
                 break;
         }
 
-        print("\n> ");
+        print("> ");
         draw_cursor();
 
         return;

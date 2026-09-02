@@ -6,7 +6,7 @@
 #include "lib/string.h"
 
 /**
- * Clears the screen.
+ * Clears the screen and resets the cursor's position to 0, 0
  */
 void clear_screen() {
     clear_terminal();

@@ -16,9 +16,7 @@ void write_char(char c, unsigned int x, unsigned int y);
 char get_char(unsigned int x, unsigned int y);
 
 void print_char(char c);
-void print_hex(unsigned int num);
 void print(char *message);
-void println(char * message);
 
 // cursor
 void set_cursor(int x, int y);
@@ -55,17 +53,6 @@ char get_char(unsigned int x, unsigned int y) {
     return video[(y * 80 + x) * 2];
 }
 
-// void print_hex(unsigned int num) {
-//     const char * hex = "0123456789ABCDEF";
-
-//     print_char('0');
-//     print_char('x');
-
-//     for (int i = 7; i >= 0; i--) {
-//         print_char(hex[(num >> (i * 4)) & 0xF]);
-//     }
-// }
-
 void print_char(char c) {
     write_char(c, CURSOR_X, CURSOR_Y);
     set_cursor(CURSOR_X + 1, CURSOR_Y);
@@ -97,6 +84,7 @@ void print_int(int num) {
 }
 
 void clear_terminal() {
+    set_cursor(0, 0);
     for (int x = 0; x < SCREEN_X; x++) {
         for (int y = 0; y < SCREEN_Y; y++) {
             write_char(' ', x, y);
