@@ -26,6 +26,5 @@ static char keyboard_map[] = {
 
 void keyboard_handler() {
     uint8_t code = inb(0x60);
-
     process_keyboard_input(keyboard_map[code], code, code & 0x80);
 }
