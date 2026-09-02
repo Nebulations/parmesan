@@ -4,6 +4,8 @@
 #include "kernel/memory/memory.h"
 #include "cmds.h"
 
+#include "lib/std/stdio.h"
+
 #define SS_OK 0
 #define SS_EXIT 1
 #define SS_BAD_CMD 2
@@ -55,14 +57,18 @@ void process_keyboard_input(char c, uint8_t code, uint8_t keyboard_map_len);
  * @param keyboard_map_len The length of the keyboard map used. 
  */
 void process_keyboard_input(char c, uint8_t code, uint8_t keyboard_map_len) {
-    int released = code & 0x80;
+    int released = (code & 0x80) != 0;
+
+    if (released == 1) {
+        return;
+    }
 
     // Validate the key is in range and not outside the array
     // so we don't access random memory addresses.
-    if (code >= keyboard_map_len) {
-        println("OUT OF BOUNDS");
-        return;
-    }
+    // if (code >= keyboard_map_len) {
+    //     println("OUT OF BOUNDS");
+    //     return;
+    // }
 
     if (c == 0) {
         return;
@@ -157,16 +163,16 @@ void process_keyboard_input(char c, uint8_t code, uint8_t keyboard_map_len) {
 
         switch (res) {
             case SS_BAD_CMD:
-                println("Unknown command '");
+                print("Unknown command '");
                 print(inputBuffer);
                 print("'.");
                 break;
             case SS_INVALID_ARGS:
-                println("Insufficient arguments. Expected 0, received 0.");
+                print("Insufficient arguments. Expected 0, received 0.");
                 break;
         }
 
-        println("> ");
+        print("\n> ");
         draw_cursor();
 
         return;

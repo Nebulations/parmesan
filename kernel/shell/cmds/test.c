@@ -1,7 +1,8 @@
 #include "kernel/shell/shell.h"
-#include "drivers/display/vga/terminal.h"
 #include "kernel/memory/memory.h"
 #include "lib/string.h"
+
+#include "lib/std/stdio.h"
 
 #define SS_OK 0
 #define SS_EXIT 1
@@ -17,23 +18,26 @@ int scmd_test(int argc, char ** argv) {
         int* a = (int*) malloc(sizeof(int));
         *a = 123;
 
-        print("a = ");
-        print_hex((uint32_t) a);
-        println("");
-
+        printf("a = %d\n", a);
         free(a);
 
         int* b = (int*) malloc(sizeof(int));
         *b = 123;
 
-        print("b = ");
-        print_hex((uint32_t) b);
-        println("");
+        printf("b = %d\n", b);
 
         free(b);
 
         return SS_OK;
     }
+
+    if (str_equals(argv[0], "print")) {
+        print("Standard print");
+        printf("\nprintf: %s |||| %d", "Test 1", 1234);
+        return SS_OK;
+    }
+
+    return SS_INVALID_ARGS;
 }
 
 void scmd_register_test() {

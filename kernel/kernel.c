@@ -8,17 +8,16 @@
 #include "interrupts/interrupts.h"
 #include "interrupts/pic.h"
 
+#include "lib/std/stdio.h"
+
 extern char kernel_end;
 
 void debug_memory_map(unsigned int multiboot_info_addr);
 void load_user();
 
 void kernel_main(unsigned int multiboot_info_addr) {
-    // Initialize the terminal to the end user.
-    // Disable the hardware cursor in favor of the software cursor.
-    disable_cursor();
-    clear_screen();
-    println("Loading...");
+    terminal_init();
+    print("Loading...\n");
 
     // debug_memory_map(multiboot_info_addr);
     heap_init();
@@ -45,16 +44,16 @@ void debug_memory_map(unsigned int multiboot_info_addr) {
         if (mmap->type == 1) {
             multiboot_memory_map_t* entry = (multiboot_memory_map_t*)((uint32_t) mmap);
             print("Start: ");
-            print_hex(entry->addr);
+            printf("%d", entry->addr);
             print(" - End: ");
-            print_hex(entry->addr + entry->len);
+            printf("%d", entry->addr + entry->len);
             print(" - Type: ");
             if (entry->type == 1) {
                 print("AVAILABLE");
             } else {
                 print("RESERVED");
             }
-            println("");
+            print("\n");
         }
         
         mmap = (multiboot_memory_map_t*)((uint32_t)mmap + mmap->size + sizeof(mmap->size));
@@ -64,8 +63,7 @@ void debug_memory_map(unsigned int multiboot_info_addr) {
 }
 
 void load_user() {
-    println("Welcome to ParmesanOS!");
-    println("> ");
+    print("Welcome to ParmesanOS!\n> ");
     draw_cursor();
 
     while (1) {
