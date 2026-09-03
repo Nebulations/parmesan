@@ -11,7 +11,10 @@ int scmd_res(int argc, char ** argv) {
     uint64_t used_memory = total_memory - free_memory;
 
     print("System memory usage:\n");
-    printf("Total memory: %d\nFree memory: %d\nUsed memory: %d\n", total_memory, free_memory, used_memory);
+    printf("Total memory: %d\nFree memory: %d\nUsed memory: %d\n\n\n", total_memory, free_memory, used_memory);
+
+    print("Heap memory usage:\n");
+    printf("Total memory: %d\n", get_heap_total_memory());
 
     return SS_OK;
 }

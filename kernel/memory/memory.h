@@ -36,5 +36,6 @@ void free(void* addr);
 
 uint64_t get_free_memory();
 uint64_t get_total_memory();
+uint16_t get_heap_total_memory();
 
 #endif

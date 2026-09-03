@@ -10,6 +10,7 @@
 
 static uint64_t total_memory = 0;
 static uint64_t free_memory = 0;
+static uint16_t heap_total = HEAP_END - HEAP_START;
 
 // Multiboot structs
 typedef struct {
@@ -139,7 +140,7 @@ void free(void * addr) {
 
     // Mark the header to be free
     header->allocated = 0;
-    total_memory+=header->size;
+    free_memory+=header->size;
 
     // Then, we find the next available header.
     block_t* next_header = header;
@@ -171,4 +172,8 @@ uint64_t get_free_memory() {
 
 uint64_t get_total_memory() {
     return total_memory;
+}
+
+uint16_t get_heap_total_memory() {
+    return heap_total;
 }
