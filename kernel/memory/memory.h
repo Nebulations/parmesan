@@ -31,8 +31,10 @@ typedef struct {
 } __attribute__((packed)) multiboot_memory_map_t;
 
 void heap_init(void);
-
 void* malloc(uint32_t bytes);
 void free(void* addr);
+
+uint64_t get_free_memory();
+uint64_t get_total_memory();
 
 #endif

@@ -8,6 +8,9 @@
 #define HEAP_START 0x00107000
 #define HEAP_END 0x07FE0000
 
+static uint64_t total_memory = 0;
+static uint64_t free_memory = 0;
+
 // Multiboot structs
 typedef struct {
     uint32_t flags;
@@ -43,6 +46,8 @@ void heap_init() {
     first_block = (block_t*) HEAP_START;
     first_block->size = HEAP_END - HEAP_START - sizeof(block_t);
     first_block->allocated = 0;
+
+    total_memory = first_block->size;
 }
 
 // Memory management
@@ -91,6 +96,7 @@ void* malloc(uint32_t bytes) {
         if (current_block->size == bytes) {
             // Mark the block as allocated
             current_block->allocated = 1;
+            free_memory-=current_block->size;
 
             // Return a void pointer pointing to the address of the start of the memory block.
             // Since the available memory is after the header, we add the header aswell to
@@ -109,6 +115,8 @@ void* malloc(uint32_t bytes) {
             // We define the current block as what we need for the new one
             current_block->size = bytes;
             current_block->allocated = 1;
+
+            free_memory-=current_block->size;
 
             // Create a new header block for the unallocated remains of the memory block.
             block_t* new_block = (block_t*) ((uint8_t*)current_block + sizeof(block_t) + bytes);
@@ -131,6 +139,7 @@ void free(void * addr) {
 
     // Mark the header to be free
     header->allocated = 0;
+    total_memory+=header->size;
 
     // Then, we find the next available header.
     block_t* next_header = header;
@@ -154,4 +163,12 @@ void free(void * addr) {
         header->size += next_header->size + sizeof(block_t);
         // next_header disappears since it has been merged with the original header.
     }
+}
+
+uint64_t get_free_memory() {
+    return free_memory;
+}
+
+uint64_t get_total_memory() {
+    return total_memory;
 }
