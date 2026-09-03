@@ -3,8 +3,10 @@
 #define NULL ((void *)0)
 
 #include "drivers/keyboard/keyboard.h"
+#include "drivers/timings/pit/pit.h"
 
 extern void keyboard_interrupt(void);
+extern void pit_interrupt(void);
 
 typedef void (*interrupt_handler_t)(void);
 
@@ -23,16 +25,21 @@ typedef struct {
     uint32_t base;
 } __attribute__((packed)) idt_ptr_t;
 
+void register_interrupt(void (*interrupt)(void), interrupt_handler_t handler, int table_index) {
+    uint32_t address = (uint32_t) interrupt;
+
+    idt_table[table_index].offset_low = address & 0xFFFF;
+    idt_table[table_index].offset_high = (address >> 16) & 0xFFFF;
+    idt_table[table_index].selector = 0x08;
+    idt_table[table_index].zero = 0;
+    idt_table[table_index].flags = 0x8E;
+
+    idt_virtual_table[table_index] = handler;
+}
+
 void interrupts_init() {
-    uint32_t handler = (uint32_t) keyboard_interrupt;
-
-    idt_table[33].offset_low = handler & 0xFFFF;
-    idt_table[33].offset_high = (handler >> 16) & 0xFFFF;
-    idt_table[33].selector = 0x08;
-    idt_table[33].zero = 0;
-    idt_table[33].flags = 0x8E;
-
-    idt_virtual_table[33] = keyboard_handler;
+    register_interrupt(pit_interrupt, pit_handler, 32);
+    register_interrupt(keyboard_interrupt, keyboard_handler, 33);
 
     idt_ptr_t idt_ptr;
     idt_ptr.limit = sizeof(idt_table) - 1;

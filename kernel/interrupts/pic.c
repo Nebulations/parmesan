@@ -60,8 +60,8 @@ void pic_init()
     outb(0xA1, 0x01);
     io_wait();
 
-    // Enable IRQ 1 (keyboard)
-    outb(0x21, 0xFD);
+    // Enable IRQ 0 & 1 (keyboard & PIT timer)
+    outb(0x21, 0xFC);
 
     // Keep all slave IRQs disabled for now
     outb(0xA1, 0xFF);

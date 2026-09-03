@@ -7,6 +7,7 @@
 #include "drivers/keyboard/keyboard.h"
 #include "interrupts/interrupts.h"
 #include "interrupts/pic.h"
+#include "drivers/timings/pit/pit.h"
 
 #include "lib/std/stdio.h"
 
@@ -21,11 +22,14 @@ void kernel_main(unsigned int multiboot_info_addr) {
 
     // debug_memory_map(multiboot_info_addr);
     heap_init();
-
     shell_init();
 
-    interrupts_init();
     pic_init();
+    pit_init(100);
+
+    interrupts_init();
+    
+    // Enable CPU interrupts
     __asm__ volatile ("sti");
 
     load_user();
