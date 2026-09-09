@@ -1,9 +1,9 @@
 #include "kernel/shell/shell.h"
-#include "drivers/display/vga/terminal.h"
+#include "lib/std/stdio.h"
 
 // example
 int scmd_example(int argc, char ** argv) {
-    
+    printf("Template example command.\n");
     return SS_OK;
 }
 

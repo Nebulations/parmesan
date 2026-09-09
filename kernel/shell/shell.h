@@ -4,9 +4,10 @@
 #define SHELL_H
 
 #define SS_OK 0
-#define SS_EXIT 1
-#define SS_BAD_CMD 2
-#define SS_INVALID_ARGS 3
+#define SS_NONE 1
+#define SS_EXIT 2
+#define SS_BAD_CMD 3
+#define SS_INVALID_ARGS 4
 
 typedef int (*command_handler_t)(int argc, char ** argv);
 

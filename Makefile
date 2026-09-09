@@ -8,7 +8,7 @@ LDFLAGS = -m32 -ffreestanding -nostdlib -T linker.ld
 KERNEL = parmesan.bin
 
 # Find all C source files recursively
-C_SOURCES = $(shell find drivers kernel lib -name "*.c")
+C_SOURCES = $(shell find drivers kernel lib fs -name "*.c")
 
 # Convert:
 # kernel/foo.c
@@ -42,10 +42,8 @@ compiled/%.o: %.s
 	mkdir -p $(dir $@)
 	$(AS) --32 $< -o $@
 
-
 run: $(KERNEL)
 	qemu-system-i386 -kernel compiled/$(KERNEL) -display gtk,grab-on-hover=off
-
 
 clean:
 	rm -rf compiled

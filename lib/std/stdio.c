@@ -72,6 +72,15 @@ void printf(const char * message, ...) {
             continue;
         }
 
+        // char args
+        if (str_equals(format, "%c")) {
+            char c = va_arg(args, char);
+
+            print_char(c);
+            i++;
+            continue;
+        }
+
         print_char(message[i]);
     }
 

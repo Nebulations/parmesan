@@ -9,6 +9,8 @@
 #include "interrupts/pic.h"
 #include "drivers/timings/pit/pit.h"
 
+#include "fs/vfs/vfs.h"
+
 #include "lib/std/stdio.h"
 
 extern char kernel_end;
@@ -20,7 +22,7 @@ void kernel_main(unsigned int multiboot_info_addr) {
     terminal_init();
     print("Loading...\n");
 
-    // debug_memory_map(multiboot_info_addr);
+    // Memory controllers
     heap_init();
     shell_init();
 
@@ -31,6 +33,9 @@ void kernel_main(unsigned int multiboot_info_addr) {
     
     // Enable CPU interrupts
     __asm__ volatile ("sti");
+
+    // File system related stuff
+    vfs_init();
 
     load_user();
 }
@@ -67,7 +72,7 @@ void debug_memory_map(unsigned int multiboot_info_addr) {
 }
 
 void load_user() {
-    print("Welcome to ParmesanOS!\n> ");
+    printf("Welcome to ParmesanOS!\n%s > ", vfs_path());
     draw_cursor();
 
     while (1) {

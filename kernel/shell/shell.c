@@ -3,13 +3,15 @@
 #include "lib/string.h"
 #include "kernel/memory/memory.h"
 #include "cmds.h"
-
-#include "lib/std/stdio.h"
+#include "fs/vfs/vfs.h"
 
 #define SS_OK 0
-#define SS_EXIT 1
-#define SS_BAD_CMD 2
-#define SS_INVALID_ARGS 3
+#define SS_NONE 1
+#define SS_EXIT 2
+#define SS_BAD_CMD 3
+#define SS_INVALID_ARGS 4
+
+#include "lib/std/stdio.h"
 
 // Allocate a 128 byte buffer for user input.
 static char inputBuffer[128];
@@ -171,7 +173,7 @@ void process_keyboard_input(char c, uint8_t code, uint8_t keyboard_map_len) {
                 break;
         }
 
-        print("> ");
+        printf("%s > ", vfs_path());
         draw_cursor();
 
         return;
