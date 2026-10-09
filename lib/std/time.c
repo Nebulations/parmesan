@@ -12,7 +12,14 @@ void sleep(uint32_t time) {
     // dumb stupid hack to get this working
     __asm__ volatile ("sti");
 
-    while (pit_get_ticks() - start < (time/50)) {
+    while (pit_get_ticks() - start < (time/54)) {
         __asm__ volatile ("hlt");
     }
+}
+
+/**
+ * Get the current system ticks since the OS booted.
+ */
+uint32_t get_ticks() {
+    return pit_get_ticks();
 }

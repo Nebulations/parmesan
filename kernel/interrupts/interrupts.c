@@ -52,7 +52,7 @@ void interrupts_init() {
     );
 }
 
-void interrupt_dispatch(uint8_t id) {
+void interrupt_dispatch(uint32_t id) {
     interrupt_handler_t handler = idt_virtual_table[id];
 
     if (handler != NULL) {
