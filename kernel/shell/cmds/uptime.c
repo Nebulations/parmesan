@@ -4,7 +4,7 @@
 
 // uptime
 int scmd_uptime(int argc, char ** argv) {
-    printf("Current uptime: %d tick(s)\n", get_ticks());
+    printf("Current uptime: %d ms\n", get_ticks());
     return SS_OK;
 }
 
