@@ -3,11 +3,11 @@
 
 #include "fs/vfs/vfs.h"
 
-int scmd_whereami(int argc, char ** argv) {
+int scmd_wai(int argc, char ** argv) {
     printf("Current work directory: %s\n", vfs_path());
     return SS_OK;
 }
 
-void scmd_register_whereami() {
-    register_cmd("whereami", 1, &scmd_whereami);
+void scmd_register_wai() {
+    register_cmd("wai", 1, &scmd_wai);
 }

@@ -47,26 +47,31 @@ void printf(const char * message, ...) {
     va_start(args, message);
 
     for (int i = 0; message[i] != '\0'; i++) {
+        // New lines
         if (message[i] == '\n') {
             set_cursor(0, get_cursor_y()+1);
             continue;
+        }
+
+        // Null terminated string
+        if (message[i] == '\0') {
+            printf("flushing here...");
+            va_end(args);
+            return;
         }
 
         char format[] = {message[i], message[i+1], '\0'};
 
         // string args
         if (str_equals(format, "%s")) {
-            char * string = va_arg(args, char *);
-            print(string);
+            print(va_arg(args, char *));
             i++;
             continue;
         }
 
         // int args
         if (str_equals(format, "%d")) {
-            int num = va_arg(args, int);
-
-            print_int(num);
+            print_int(va_arg(args, int));
 
             i++;
             continue;
@@ -74,9 +79,7 @@ void printf(const char * message, ...) {
 
         // char args
         if (str_equals(format, "%c")) {
-            char c = va_arg(args, char);
-
-            print_char(c);
+            print_char(va_arg(args, char));
             i++;
             continue;
         }

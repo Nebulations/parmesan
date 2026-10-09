@@ -6,7 +6,7 @@ extern void scmd_register_res();
 // FS related commands
 extern void scmd_register_ls();
 extern void scmd_register_cd();
-extern void scmd_register_whereami();
+extern void scmd_register_wai();
 
 void scmds_init() {
     scmd_register_echo();
@@ -16,5 +16,5 @@ void scmds_init() {
 
     scmd_register_ls();
     scmd_register_cd();
-    scmd_register_whereami();
+    scmd_register_wai();
 }
